@@ -1,6 +1,5 @@
 package info.androidhive.exoplayer
 
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +19,7 @@ class PlayerActivity : AppCompatActivity() {
     private var mediaItemIndex = 0
     private var playbackPosition = 0L
     private var mediaUrl: String? = null
-    private var mediaType: String? = null
+    private var isDash = false
 
     private val playbackStateListener: Player.Listener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -40,6 +39,7 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mediaUrl = intent.extras?.getString("url")
+        isDash = intent.extras?.getBoolean("is_dash") ?: false
 
         if (mediaUrl.isNullOrBlank()) {
             Toast.makeText(this, "Media url is null!", Toast.LENGTH_SHORT).show()
@@ -48,17 +48,20 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun initializePlayer() {
-        // ExoPlayer implements the Player interface
         player = ExoPlayer.Builder(this).build().also { exoPlayer ->
             binding.playerView.player = exoPlayer
-            // Update the track selection parameters to only pick standard definition tracks
             exoPlayer.trackSelectionParameters =
                 exoPlayer.trackSelectionParameters.buildUpon().setMaxVideoSizeSd().build()
 
-            val mediaItem = MediaItem.fromUri(Uri.parse(mediaUrl))
-            //val mediaItem = MediaItem.Builder().setUri("https://www.youtube.com/api/manifest/dash/id/bf5bb2419360daf1/source/youtube?as=fmp4_audio_clear,fmp4_sd_hd_clear&sparams=ip,ipbits,expire,source,id,as&ip=0.0.0.0&ipbits=0&expire=19000000000&signature=51AF5F39AB0CEC3E5497CD9C900EBFEAECCCB5C7.8506521BFC350652163895D4C26DEE124209AA9E&key=ik0")
-              //  .setMimeType(MimeTypes.APPLICATION_MPD).build()
-            //val mediaItem = MediaItem.fromUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fnightfall-future-bass-music-228100.mp3?alt=media&token=32821471-654b-4a9e-9790-1e9c7d1cc584"))
+            val mediaBuilder = MediaItem.Builder().setUri(mediaUrl)
+
+            // set mime type to APPLICATION_MPD in case of DASH
+            if (isDash) {
+                mediaBuilder.setMimeType(MimeTypes.APPLICATION_MPD)
+            }
+
+            val mediaItem = mediaBuilder.build()
+
             exoPlayer.setMediaItems(listOf(mediaItem), mediaItemIndex, playbackPosition)
             exoPlayer.playWhenReady = playWhenReady
             exoPlayer.addListener(playbackStateListener)
