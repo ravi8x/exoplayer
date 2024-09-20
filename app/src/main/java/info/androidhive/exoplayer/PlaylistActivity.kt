@@ -1,6 +1,5 @@
 package info.androidhive.exoplayer
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +14,15 @@ class PlaylistActivity : AppCompatActivity() {
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlaylistBinding.inflate(layoutInflater)
     }
+
+    private val mediaUrl1 =
+        "https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fnightfall-future-bass-music-228100.mp3?alt=media&token=32821471-654b-4a9e-9790-1e9c7d1cc584"
+    private val mediaUrl2 =
+        "https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fsample2.mp4?alt=media&token=2f09078b-6c87-4159-9054-73c9b88d665b"
+    private val mediaUrl3 =
+        "https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fin-slow-motion-inspiring-ambient-lounge-219592.mp3?alt=media&token=8c4e73cb-97c6-4163-9cfe-0728dbecf076"
+    private val mediaUrl4 =
+        "https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fnight-detective-226857.mp3?alt=media&token=4f6ade23-0aaf-4afc-acb9-645540f2fe87"
 
     private var player: Player? = null
     private var playWhenReady = true
@@ -66,9 +74,9 @@ class PlaylistActivity : AppCompatActivity() {
 
     private fun preparePlayList(): List<MediaItem> {
         return listOf(
-            MediaItem.fromUri("https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fnightfall-future-bass-music-228100.mp3?alt=media&token=32821471-654b-4a9e-9790-1e9c7d1cc584"),
-            MediaItem.fromUri("https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fnight-detective-226857.mp3?alt=media&token=4f6ade23-0aaf-4afc-acb9-645540f2fe87"),
-            MediaItem.fromUri("https://firebasestorage.googleapis.com/v0/b/project-8525323942962534560.appspot.com/o/samples%2Fin-slow-motion-inspiring-ambient-lounge-219592.mp3?alt=media&token=8c4e73cb-97c6-4163-9cfe-0728dbecf076"),
+            MediaItem.fromUri(mediaUrl1),
+            MediaItem.fromUri(mediaUrl2),
+            MediaItem.fromUri(mediaUrl3),
         )
     }
 
