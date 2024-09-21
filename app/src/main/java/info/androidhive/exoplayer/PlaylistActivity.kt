@@ -77,6 +77,7 @@ class PlaylistActivity : AppCompatActivity() {
             MediaItem.fromUri(mediaUrl1),
             MediaItem.fromUri(mediaUrl2),
             MediaItem.fromUri(mediaUrl3),
+            MediaItem.fromUri(mediaUrl4),
         )
     }
 
